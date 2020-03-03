@@ -1,0 +1,57 @@
+
+#include<iostream>
+#include<cstring>
+#define INF 10000
+using namespace std;
+const int N = 5;
+bool visit[N];
+int dist[N] = { 0, };
+int G[N][N] = { {INF,3,4,INF,INF,},  //INF代表两点之间不可达
+                {3,INF,5,INF,10},
+                {4,5,INF,3,INF},
+                {INF,INF,3,INF,5},
+                {INF,10,INF,5,INF},
+};
+int prim(int cur)//首个挑选到的节点 cur
+{
+    int index = cur;
+    int sum = 0;       //最短路径之和
+    int i = 0, j = 0;
+    cout << index << " ";
+    memset(visit, false, sizeof(visit));  //标记数组，初始化，全部未访问
+    visit[cur] = true;
+    for (i = 0; i < N; i++)//与第一个挑走的点i，相连的所有边的距离，存入dist[]中
+        dist[i] = G[cur][i];//初始化，每个与a邻接的点的距离存入dist
+
+    for (i = 1; i < N; i++)//遍历表中每一个节点
+    {
+        int minn = INF;   //与另一个表相连的最小边，初始化，为一个极大值
+        for (j = 0; j < N; j++)
+        {
+            if (!visit[j] && dist[j] < minn)          //找到未访问的点中，距离当前最小生成树距离最小的点
+            {
+                minn = dist[j];  //不断更新与点cur的相连点的最短距离
+                index = j;
+            }
+        }
+        visit[index] = true;//标记距离最短的刚刚被拿走的那个节点，已经被访问过
+        cout << index << " ";
+        sum += minn;
+        for (j = 0; j < N; j++)  //已经进入最小树的点的可及范围，与刚进入最小树的点相比较，比之前点可到达某点的距离较小，更新当前最小生成树的可及范围的最小值*****
+        {
+            if (!visit[j] && dist[j] > G[index][j])      //执行更新，如果点距离当前点的距离更近，就更新dist
+            {
+                dist[j] = G[index][j];
+            }
+        }
+    }
+    cout << endl;
+    return sum;               //返回最小生成树的总路径值
+}
+int main()
+{
+    cout << prim(0) << endl;//从顶点a开始
+    return 0;
+}
+
+
