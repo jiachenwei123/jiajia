@@ -1,0 +1,21 @@
+#include<stdio.h>
+#include<string.h>
+int main() {
+	int T[1000];
+	int n = 10;
+	int x = 5;
+	int flag = 0;
+	for (int i = 0; i < n; i++) {
+
+		scanf("%d", &T[i]);
+	}
+	for (int i = 0; i < n; i++) {
+		if (T[i] == x) {
+			printf("%d", i);
+			flag = 1;
+		}
+	}
+	if (flag == 0)
+		printf("j==0");
+	return 0;
+}
