@@ -1,0 +1,30 @@
+#include<stdio.h>
+#include<string.h>
+int main() {
+	int T[1000];
+	int n = 10;
+	int x = 5;
+	for (int i = 0; i < n; i++) {
+
+		scanf("%d", &T[i]);
+	}
+	int top = 0, end = n - 1, mid;
+	int find = -1;
+	while (top <= end) {
+	mid = (top + end) / 2;
+	if (T[mid] == x) {
+		find = mid;
+		break;
+	}
+	else if (T[mid] > x) {
+		end = mid - 1;
+	}
+	else
+		end = top + 1;
+}
+	if (find != -1)
+		printf("%d", find);
+	else
+		printf("j==0");
+	return 0;
+}
