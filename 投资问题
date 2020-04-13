@@ -1,0 +1,70 @@
+#include<stdio.h>
+#include<string.h> 
+
+int main()
+{
+    int m, n;
+    int a;
+    printf("请输入工厂的个数:");
+    scanf("%d", &m);
+    printf("请输入每个投资种类的个数:");
+    scanf("%d", &n);
+    printf("请输入投资总金额：");
+    scanf("%d", &a);
+
+    int array[m][n]; //创建一个数组array：每个工厂在所有可能投资下的获取利润
+    int array1[m][n];//创建一个数组array1：在某投资额下前M个工厂可以获取的最大利润
+    int path[m][n]; //创建一个数组path：记录在某总投资额下投资一部分资金给第M个工厂时获取最大利润时，这个部分投资额的数值
+    memset(array, 0, sizeof(array));   //将数组array的值初始化为0
+    memset(array1, 0, sizeof(array1));  //将数组array1的值初始化为0
+    memset(path, 0, sizeof(path));    //将数组path的值初始化为0
+
+    printf("请依次输入每个工厂在所有可能投资下的获取利润：");
+    int i, j, k;
+    for (i = 0; i < m; i++)
+    {
+        for (j = 0; j < n; j++)
+        {
+            scanf("%d", &array[i][j]);
+        }
+    }
+
+    for (i = 0; i < m; i++)
+    {
+        for (j = 0; j < n; j++)
+        {
+            if (i == 0)
+            {
+                array1[i][j] = array[i][j];       //第一个工厂直接全部分配给自己
+                if (array[i][j] > path[i][j])
+                {
+                    path[i][j] = j;  //全部投资额都给自己
+                }
+            }
+            else {
+                for (k = 0; k < n; k++)
+                {
+                    if (j - k >= 0) //保证投资给除了自己的工厂外不能大于总投资额
+                    {
+                        if (array[i][k] + array1[i - 1][j - k] > array1[i][j]) //获取收益最大值时投资给自己的投资额
+                        {
+                            array1[i][j] = array[i][k] + array1[i - 1][j - k];//更新
+                            path[i][j] = k;    //记录投资给自己多少
+                        }
+                    }
+                    else {
+                        break;
+                    }
+
+                }
+            }
+        }
+    }
+    printf("最大利润为：%d \n", array1[m - 1][n - 1]);
+    a = a / 10;
+    for (i = m - 1; i >= 0; i--)
+    {
+        printf("第%d个工厂投资为：%d \n", i + 1, path[i][a] * 10);
+        a -= path[i][a];
+    }
+}
