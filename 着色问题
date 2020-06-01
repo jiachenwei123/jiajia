@@ -1,0 +1,71 @@
+#include<stdio.h>
+void gc()
+{
+	int n;
+    printf("请输入节点数：");
+    scanf("%d",&n);
+    printf("请输入邻接矩阵：\n");
+	for(int i=0;i<n;i++)
+	printf("%3d",i+1);
+	printf("\n");
+	int a[n][n];
+	for(int i=0;i<n;i++)        //邻接矩阵存储图信息 
+	{
+		printf("%-2d",i+1);
+		for(int j=0;j<n;j++)
+		{
+			scanf("%d",&a[i][j]);
+		}
+	getchar();
+	}
+	int m;
+	printf("请输入颜色数：");
+	scanf("%d",&m);
+	int result[n];                   //存放每个顶点的着色 
+	for(int i=0;i<n;i++)
+	result[i]=0;
+	result[0]=1;               
+	int k=1;
+	while(k>-1)
+	{
+		result[k]++;
+		while(result[k]<=m)
+		{
+			int flag=0;
+			for(int j=0;j<k;j++)         //遍历已着色顶点，判断是否满足约束条件 
+	    {
+	    	if(a[k][j]==1&&result[k]==result[j])
+	    	flag=1;
+		}
+		if(flag==0)
+		break;
+		else
+		result[k]++;
+		}
+	    if(result[k]<=m)
+	    {
+	    	if(k==n-1)                   //最后一个顶点着色成功，跳出循环 
+	    	break;
+	    	else 
+	    	k++;                         //继续对顶点着色 
+		}
+		else
+		{
+		result[k]=0;
+		 k--;	                         //该顶点没有满足约束条件的着色，回溯 
+		}
+	   
+	}
+	if(k==-1)
+	printf("无解");
+	else
+	{ 
+        printf("图着色问题的一个解为：\n");
+		for(int i=0;i<n;i++)
+		printf("节点%d色号：%d\n",i+1,result[i]);
+	 } 
+ } 
+ main()
+ {
+ 	gc();
+ }
